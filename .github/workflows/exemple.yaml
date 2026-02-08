@@ -8,6 +8,10 @@ jobs:
         steps: 
         - name: welcome message
           run: echo "hello from github job "
+          
+        - name: checkout repo
+          uses: actions/checkout@v4
+
         - name: List files 
           run: ls
         - name: read file
