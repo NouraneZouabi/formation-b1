@@ -12,36 +12,37 @@ pipeline {
         }
         stage ("Clone repo"){
             steps {
-                sh "git clone https://github.com/NouraneZouabi/Dep.git"
+                bat "git clone https://github.com/NouraneZouabi/Dep.git"
             }
         }
         stage ("Generate frontend image") {
             steps {
                  dir("app/angular-app"){
-                    sh "docker build -t nouran10/myapp-frontend . --no-cache"
-                    sh "docker push nouran10/myapp-frontend"
+                    bat "docker build -t nouran10/myapp-frontend . --no-cache"
+                    bat "docker push nouran10/myapp-frontend"
                 }                
             }
         }
         stage ("Generate backend image") {
               steps {
                    dir("app/springboot/app"){
-                      sh "mvn clean install"
-                      sh "docker build -t nouran10/myapp-backend . --no-cache"
-                      sh "docker push nouran10/myapp-backend"
+                      bat "mvn clean install"
+                      bat "docker build -t nouran10/myapp-backend . --no-cache"
+                      bat "docker push nouran10/myapp-backend"
                   }                
               }
           }
         stage ("Run docker compose") {
             steps {
                  dir("app"){
-                    sh "docker compose down --volumes" 
-                    sh "docker compose pull"
-                    sh "docker compose up -d"
+                    bat "docker compose down --volumes" 
+                    bat "docker compose pull"
+                    bat "docker compose up -d"
                 }                
             }
         }
     }
 }
+
 
 
