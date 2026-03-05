@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent { label 'docker-agent' }
     tools { 
         maven 'maven'
         nodejs 'node'
@@ -18,8 +18,8 @@ pipeline {
         stage ("Generate frontend image") {
             steps {
                  dir("app/angular-app"){
-                    bat "wsl docker build -t nouran10/myapp-frontend . --no-cache"
-                    bat "wsl docker push nouran10/myapp-frontend"
+                    bat "docker build -t nouran10/myapp-frontend . --no-cache"
+                    bat "docker push nouran10/myapp-frontend"
                 }                
             }
         }
@@ -27,8 +27,8 @@ pipeline {
               steps {
                    dir("app/springboot/app"){
                       bat "mvn clean install"
-                      bat "wsl docker build -t nouran10/myapp-backend . --no-cache"
-                      bat "wsl docker push nouran10/myapp-backend"
+                      bat "docker build -t nouran10/myapp-backend . --no-cache"
+                      bat "docker push nouran10/myapp-backend"
                   }                
               }
           }
@@ -43,6 +43,7 @@ pipeline {
         }
     }
 }
+
 
 
 
