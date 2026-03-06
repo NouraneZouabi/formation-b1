@@ -34,7 +34,12 @@ pipeline {
                                                      usernameVariable: 'DOCKER_USER', 
                                                      passwordVariable: 'DOCKER_PASS')]) {
                       bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
-                      bat "mvnw.cmd clean install"
+                      def mvnHome = tool 'maven'
+                      withEnv(["PATH+MAVEN=${mvnHome}\\bin", "MAVEN_USER_HOME=C:\\ProgramData\\Jenkins\\.m2"]) {
+                        dir('Dep\\springboot\\app') {
+                            bat 'mvn clean install'
+                        }
+                      }
                       bat "docker build -t nouran10/myapp-backend . --no-cache"
                       bat "docker push nouran10/myapp-backend"
                   } }               
@@ -51,6 +56,7 @@ pipeline {
         }
     }
 }
+
 
 
 
