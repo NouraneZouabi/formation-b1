@@ -24,7 +24,7 @@ pipeline {
                     bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                     bat "docker build -t nouran10/myapp-frontend . --no-cache"
                     bat "docker push nouran10/myapp-frontend"
-                }                
+                }    }            
             }
         }
         stage ("Generate backend image") {
@@ -37,7 +37,7 @@ pipeline {
                       bat "mvn clean install"
                       bat "docker build -t nouran10/myapp-backend . --no-cache"
                       bat "docker push nouran10/myapp-backend"
-                  }                
+                  } }               
               }
           }
         stage ("Run docker compose") {
@@ -51,6 +51,7 @@ pipeline {
         }
     }
 }
+
 
 
 
