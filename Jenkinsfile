@@ -18,6 +18,10 @@ pipeline {
         stage ("Generate frontend image") {
             steps {
                  dir("Dep/angular-app"){
+                  withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', 
+                                                 usernameVariable: 'DOCKER_USER', 
+                                                 passwordVariable: 'DOCKER_PASS')]) {
+                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                     bat "docker build -t nouran10/myapp-frontend . --no-cache"
                     bat "docker push nouran10/myapp-frontend"
                 }                
@@ -26,6 +30,10 @@ pipeline {
         stage ("Generate backend image") {
               steps {
                    dir("Dep/springboot/app"){
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', 
+                                                     usernameVariable: 'DOCKER_USER', 
+                                                     passwordVariable: 'DOCKER_PASS')]) {
+                      bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                       bat "mvn clean install"
                       bat "docker build -t nouran10/myapp-backend . --no-cache"
                       bat "docker push nouran10/myapp-backend"
@@ -43,6 +51,7 @@ pipeline {
         }
     }
 }
+
 
 
 
