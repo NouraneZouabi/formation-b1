@@ -113,12 +113,14 @@ kind: Service
 metadata:
   name: spring-boot-app-service
 spec:
+  type: NodePort
   selector:
     app: spring-boot-app
   ports:
     - protocol: TCP
       port: 8081
       targetPort: 8081
+      nodePort: 30801
 ---
 apiVersion: apps/v1
 kind: Deployment
