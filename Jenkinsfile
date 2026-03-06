@@ -1,70 +1,68 @@
 pipeline {
     agent any
+
     tools { 
         maven 'maven'
         nodejs 'node'
     }
+
     stages {
-        stage ("Clean up"){
+
+        stage("Clean up"){
             steps {
                 deleteDir()
             }
         }
-        stage ("Clone repo"){
+
+        stage("Clone repo"){
             steps {
                 bat "git clone https://github.com/NouraneZouabi/Dep.git"
             }
         }
-        stage ("Generate frontend image") {
+
+        stage("Generate frontend image") {
             steps {
-                 dir("Dep/angular-app"){
-                  withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', 
-                                                 usernameVariable: 'DOCKER_USER', 
-                                                 passwordVariable: 'DOCKER_PASS')]) {
-                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
-                    bat "docker build -t nouran10/myapp-frontend . --no-cache"
-                    bat "docker push nouran10/myapp-frontend"
-                }    }            
+                dir("Dep/angular-app"){
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS')]) {
+
+                        bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
+                        bat "docker build -t nouran10/myapp-frontend . --no-cache"
+                        bat "docker push nouran10/myapp-frontend"
+                    }
+                }
             }
         }
-        stage ("Generate backend image") {
-              steps {
-                   dir("Dep/springboot/app"){
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', 
-                                                     usernameVariable: 'DOCKER_USER', 
-                                                     passwordVariable: 'DOCKER_PASS')]) {
-                      bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
-                      def mvnHome = tool 'maven'
-                      withEnv(["PATH+MAVEN=${mvnHome}\\bin", "MAVEN_USER_HOME=C:\\ProgramData\\Jenkins\\.m2"]) {
-                        dir('Dep\\springboot\\app') {
-                            bat 'mvn clean install'
-                        }
-                      }
-                      bat "docker build -t nouran10/myapp-backend . --no-cache"
-                      bat "docker push nouran10/myapp-backend"
-                  } }               
-              }
-          }
-        stage ("Run docker compose") {
+
+        stage("Generate backend image") {
             steps {
-                 dir("app"){
-                    bat "docker compose down --volumes" 
+                dir("Dep/springboot/app"){
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS')]) {
+
+                        bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
+
+                        // Build Spring Boot
+                        bat "mvn clean install"
+
+                        // Build Docker image
+                        bat "docker build -t nouran10/myapp-backend . --no-cache"
+                        bat "docker push nouran10/myapp-backend"
+                    }
+                }
+            }
+        }
+
+        stage("Run docker compose") {
+            steps {
+                dir("Dep"){
+                    bat "docker compose down --volumes"
                     bat "docker compose pull"
                     bat "docker compose up -d"
-                }                
+                }
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
