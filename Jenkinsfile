@@ -34,7 +34,7 @@ pipeline {
                                                      usernameVariable: 'DOCKER_USER', 
                                                      passwordVariable: 'DOCKER_PASS')]) {
                       bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
-                      bat "mvn clean install"
+                      bat "mvnw.cmd clean install"
                       bat "docker build -t nouran10/myapp-backend . --no-cache"
                       bat "docker push nouran10/myapp-backend"
                   } }               
@@ -51,6 +51,7 @@ pipeline {
         }
     }
 }
+
 
 
 
