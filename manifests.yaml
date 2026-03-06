@@ -1,19 +1,29 @@
 apiVersion: v1
-kind: Service
+kind: PersistentVolume            # Create a PersistentVolume
 metadata:
-  name: mysql-service        # correspond au nom dans Spring Boot
+  name: mysql-pv
 spec:
-  selector:
-    app: mysql
-  ports:
-    - port: 3306
-      targetPort: 3306
-      protocol: TCP
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain  # Retain the PersistentVolume even after PersistentVolumeClaim is deleted. The volume is considered “released”. But it is not yet available for another claim because the previous claimant’s data remains on the volume. 
+---    
+apiVersion: v1
+kind: PersistentVolumeClaim        # Create a PersistentVolumeClaim to request a PersistentVolume storage
+metadata:                          # Claim name and labels
+  name: mysql-pvc
+spec:                              # Access mode and resource limits
+  accessModes:
+    - ReadWriteOnce                # ReadWriteOnce means the volume can be mounted as read-write by a single Node
+  resources:
+    requests:
+      storage: 500Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql-deployment
 spec:
   replicas: 1
   selector:
@@ -26,14 +36,16 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:5.7       # mettre la version pour plus de stabilité
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: root
-            - name: MYSQL_DATABASE
-              value: demo
+          image: mysql:5.7
           ports:
             - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              value: demo
+            - name: MYSQL_ROOT_USERNAME
+              value: root
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
           volumeMounts:
             - name: mysql-persistent-storage
               mountPath: /var/lib/mysql
@@ -42,7 +54,18 @@ spec:
           persistentVolumeClaim:
             claimName: mysql-pvc
 ---
-# Deployment Spring Boot
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -69,20 +92,19 @@ spec:
               value: root
             - name: SPRING_DATASOURCE_PASSWORD
               value: root
-            - name: spring.jpa.database-platform
-              value: org.hibernate.dialect.MySQL8Dialect
             - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
               value: com.mysql.cj.jdbc.Driver
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: update
             - name: SPRING_MVC_CORS_MAPPING
               value: /**
+            - name: SPRING_MVC_CORS_ALLOWED_ORIGINS
+              value: http://angular-app-service:80
             - name: SPRING_MVC_CORS_ALLOWED_METHODS
               value: GET,POST,PUT,DELETE
             - name: SPRING_MVC_CORS_ALLOWED_HEADERS
               value: "*"
 ---
-# Service Spring Boot
 apiVersion: v1
 kind: Service
 metadata:
@@ -95,7 +117,6 @@ spec:
       port: 8081
       targetPort: 8081
 ---
-# Deployment Angular
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -115,19 +136,15 @@ spec:
           image: nouran10/myapp-frontend
           ports:
             - containerPort: 80
-          command: ["nginx", "-g", "daemon off;"] # Angular doit rester en écoute
 ---
-# Service Angular
 apiVersion: v1
 kind: Service
 metadata:
   name: angular-app-service
 spec:
-  type: NodePort
   selector:
     app: angular-app
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 31000
