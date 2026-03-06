@@ -113,9 +113,11 @@ kind: Service
 metadata:
   name: angular-app-service
 spec:
+  type: NodePort
   selector:
     app: angular-app
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
+      nodePort: 31000
