@@ -45,7 +45,10 @@ pipeline {
                         bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
 
                         // Build Spring Boot
-                        bat "maven clean install"
+                        script {
+                            def mvnHome = tool 'maven'
+                            bat "\"${mvnHome}\\bin\\mvn.cmd\" clean install"
+                        }
 
                         // Build Docker image
                         bat "docker build -t nouran10/myapp-backend . --no-cache"
@@ -66,4 +69,5 @@ pipeline {
         }
     }
 }
+
 
