@@ -67,11 +67,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir("Dep") {
-                  withkubeConfig([credentialsId:'kubeconfig',serverURL:'https://54.196.35.185:6443']){
+                  withKubeConfig([credentialsId:'kubeconfig',serverURL:'https://54.196.35.185:6443']){
                       bat 'kubectl get nodes'
                 }
             }
         }
 
     }
+}
 }
