@@ -56,15 +56,16 @@ pipeline {
         stage("Deploy") {
             steps {
                 dir('Dep/') {
-                    withKubeConfig([credentialsId: 'kubeconfig']) {
-                        bat "kubectl apply -f manifests.yaml"
-                        bat "kubectl apply -f ingress.yaml"
+                    withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://172.31.79.162:6443']) {
+                        bat 'kubectl config view'
+                        bat 'kubectl get nodes'
                     }
                 }
         }
     }
 }
 }
+
 
 
 
