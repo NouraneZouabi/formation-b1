@@ -67,7 +67,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir("Dep") {
-                  bat 'docker compose up -d'
+                  withkubeConfig([credentialsId:'kubeconfig',serverURL:'https://54.196.35.185:6443']){
+                      bat 'kubectl get nodes'
                 }
             }
         }
