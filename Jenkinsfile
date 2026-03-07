@@ -53,17 +53,15 @@ pipeline {
             }
         }
 
-        stage("Run docker compose") {
+        stage("Deploy") {
             steps {
-                dir("Dep"){
-                    bat "docker compose down --volumes"
-                    bat "docker compose pull"
-                    bat "docker compose up -d"
-                }
+                withkubeConfig(cridentialsId: 'kubeconfig'){
+                    bat "kubectl apply -f manifests.yaml"
             }
         }
     }
 }
+
 
 
 
