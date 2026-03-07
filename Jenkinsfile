@@ -71,8 +71,7 @@ pipeline {
                       bat 'kubectl get nodes'
                 }
             }
-        }
+        }}
 
     }
-}
 }
