@@ -53,7 +53,7 @@ pipeline {
 
                         bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
 
-                        bat "set MAVEN_USER_HOME=C:\\Jenkins\\.m2 && mvnw.cmd clean install"
+                        bat 'set "MAVEN_USER_HOME=C:\\Jenkins\\.m2" && mvnw.cmd clean install'
 
                         bat 'docker build -t nouran10/myapp-backend . --no-cache'
 
