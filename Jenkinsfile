@@ -70,8 +70,8 @@ pipeline {
                   withKubeConfig([credentialsId:'kubeconfigg']){
                       bat 'kubectl config view'
                       bat 'kubectl get nodes --insecure-skip-tls-verify'
-                      bat 'kubectl apply -f k8s'
-                      bat 'kubectl apply -f ingress.yaml'
+                      bat 'kubectl apply -f k8s --validate=false'
+                      bat 'kubectl apply -f ingress.yaml --validate=false'
                 }
             }
         }}
