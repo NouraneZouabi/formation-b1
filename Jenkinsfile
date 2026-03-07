@@ -68,6 +68,7 @@ pipeline {
             steps {
                 dir("Dep") {
                   withKubeConfig([credentialsId:'kubeconfig',serverURL:'https://54.196.35.185:6443']){
+                      bat 'kubectl config view'
                       bat 'kubectl get nodes'
                 }
             }
