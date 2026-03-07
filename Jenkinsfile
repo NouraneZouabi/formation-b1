@@ -35,6 +35,17 @@ pipeline {
             }
         }
 
+        stage("Generate frontend image") {
+            steps {
+                dir("Dep/"){
+                    mvn clean verify sonar:sonar \
+                      -Dsonar.projectKey=deploy-app \
+                      -Dsonar.host.url=http://54.196.35.185:9000 \
+                      -Dsonar.login=sqp_6f462fb68efb239e5a5d404a1dc7044c4abd916e
+                }
+            }
+        }
+        
         stage("Generate backend image") {
             steps {
                 dir("Dep/springboot/app"){
@@ -67,6 +78,7 @@ pipeline {
     }
 }
 }
+
 
 
 
