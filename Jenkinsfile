@@ -41,7 +41,19 @@ pipeline {
             }
         }
 
-
+        stage('test sonar') {
+            steps {
+                dir('Dep/springboot/app') {
+                    bat 'set "MAVEN_USER_HOME=C:\\Jenkins\\.m2" && mvnw.cmd clean install'
+                    bat """
+                        mvn clean verify sonar:sonar \
+                          -Dsonar.projectKey=deploy-appa \
+                          -Dsonar.host.url=http://54.196.35.185:9000 \
+                          -Dsonar.login=sqp_0151acfbcbee1f8f07023f83666e28490d65dca6   
+                    """
+                }
+            }
+        }
         stage('Generate backend image') {
             steps {
                 dir('Dep/springboot/app') {
@@ -70,8 +82,8 @@ pipeline {
                   withKubeConfig([credentialsId:'kubeconfigg']){
                       bat 'kubectl config view'
                       bat 'kubectl get nodes --insecure-skip-tls-verify'
-                      bat 'kubectl apply -f k8s --validate=false'
-                      bat 'kubectl apply -f ingress.yaml --validate=false'
+                      bat 'kubectl apply -f k8s --validate=false --insecure-skip-tls-verify'
+                      bat 'kubectl apply -f ingress.yaml --validate=false --insecure-skip-tls-verify'
                 }
             }
         }}
