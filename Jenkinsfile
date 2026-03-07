@@ -67,7 +67,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir("Dep") {
-                  withKubeConfig([credentialsId:'kubeconfigg']){
+                  withKubeConfig([credentialsId:'kubeconfig']){
                       bat 'ping 54.196.35.185'
                       bat 'curl -k https://54.196.35.185:6443'
                       bat 'kubectl config view'
