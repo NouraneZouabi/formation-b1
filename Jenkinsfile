@@ -38,6 +38,7 @@ pipeline {
         stage("sonar test") {
             steps {
                 dir("Dep/"){
+                  bat "set MAVEN_USER_HOME=C:\\Jenkins\\.m2&& mvnw.cmd clean install"
                   bat """
                     mvn clean verify sonar:sonar \
                       -Dsonar.projectKey=deploy-app \
@@ -80,6 +81,7 @@ pipeline {
     }
 }
 }
+
 
 
 
