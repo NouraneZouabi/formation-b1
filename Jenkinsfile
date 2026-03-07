@@ -73,7 +73,7 @@ pipeline {
                     withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://54.196.35.185:6443']) {
                         bat 'kubectl config view'
                         bat 'kubectl get nodes'
-                        bat 'kubectl apply -f k8s/*'
+                        powershell 'kubectl apply -f k8s/*'
                         bat 'kubectl apply -f ingress.yaml'
                     }
                 }
@@ -81,6 +81,7 @@ pipeline {
     }
 }
 }
+
 
 
 
