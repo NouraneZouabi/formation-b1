@@ -71,7 +71,7 @@ pipeline {
                       bat 'ping 54.196.35.185'
                       bat 'curl -k https://54.196.35.185:6443'
                       bat 'kubectl config view'
-                      bat 'kubectl get nodes'
+                      bat 'kubectl get nodes --insecure-skip-tls-verify'
                 }
             }
         }}
