@@ -37,7 +37,7 @@ pipeline {
 
         stage("sonar test") {
           steps {
-            dir("Dep") {
+            dir("Dep/springboot/app") {
                 bat """
                mvn clean verify sonar:sonar ^
                -Dsonar.projectKey=deploy-app ^
@@ -80,6 +80,7 @@ pipeline {
     }
 }
 }
+
 
 
 
