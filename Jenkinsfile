@@ -55,7 +55,7 @@ pipeline {
 
         stage("Deploy") {
             steps {
-                dir('Dep/manifests') {
+                dir('Dep/') {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         bat "kubectl apply -f manifests.yaml"
                         bat "kubectl apply -f ingress.yaml"
@@ -65,6 +65,7 @@ pipeline {
     }
 }
 }
+
 
 
 
