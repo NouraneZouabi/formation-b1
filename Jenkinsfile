@@ -55,13 +55,17 @@ pipeline {
 
         stage("Deploy") {
             steps {
-                withKubeConfig([credentialsId: 'kubeconfig']) {
-                    bat "kubectl apply -f manifests.yaml"
+                dir('Dep/manifests') {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        bat "kubectl apply -f manifests.yaml"
+                        bat "kubectl apply -f ingress.yaml"
+                    }
                 }
         }
     }
 }
 }
+
 
 
 
