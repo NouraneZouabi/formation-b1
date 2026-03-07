@@ -36,18 +36,17 @@ pipeline {
         }
 
         stage("sonar test") {
-            steps {
-                dir("Dep/"){
-                  bat "set MAVEN_USER_HOME=C:\\Jenkins\\.m2&& mvnw.cmd clean install"
-                  bat """
-                    mvn clean verify sonar:sonar \
-                      -Dsonar.projectKey=deploy-app \
-                      -Dsonar.host.url=http://54.196.35.185:9000 \
-                      -Dsonar.login=sqp_6f462fb68efb239e5a5d404a1dc7044c4abd916e
-                  """
-                }
-            }
-        }
+          steps {
+            dir("Dep") {
+                bat """
+               mvn clean verify sonar:sonar ^
+               -Dsonar.projectKey=deploy-app ^
+               -Dsonar.host.url=http://54.196.35.185:9000 ^
+               -Dsonar.login=sqp_6f462fb68efb239e5a5d404a1dc7044c4abd916e
+               """
+                 }
+          }
+     }
         
         stage("Generate backend image") {
             steps {
@@ -81,6 +80,7 @@ pipeline {
     }
 }
 }
+
 
 
 
