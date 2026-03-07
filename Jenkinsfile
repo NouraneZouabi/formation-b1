@@ -46,7 +46,7 @@ pipeline {
                 dir('Dep/springboot/app') {
 
                     withCredentials([usernamePassword(
-                        credentialsId: 'dockerhub',
+                        credentialsId: 'docker-hub-creds',
                         usernameVariable: 'DOCKER_USER',
                         passwordVariable: 'DOCKER_PASS'
                     )]) {
