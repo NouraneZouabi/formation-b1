@@ -80,7 +80,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 sshagent(['ssh-key']) {
-                    sh '''
+                    bat '''
                     ssh ubuntu@54.196.35.185 "cd /home/ubuntu/Dep/ansible && ansible-playbook -i inventory.ini playbook.yaml"
                     '''
                 }
