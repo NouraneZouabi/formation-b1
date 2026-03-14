@@ -1,0 +1,31 @@
+- hosts: master
+  become: yes
+
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+
+  tasks:
+
+  - name: Deploy MySQL
+    command: kubectl apply -f /home/ubuntu/Dep/k8s/mysql-deploy.yaml
+
+  - name: MySQL Service
+    command: kubectl apply -f /home/ubuntu/Dep/k8s/mysql-service.yaml
+
+  - name: Deploy Backend
+    command: kubectl apply -f /home/ubuntu/Dep/k8s/deploy-spring.yaml
+
+  - name: Backend Service
+    command: kubectl apply -f /home/ubuntu/Dep/k8s/service-backend.yaml
+
+  - name: Deploy Frontend
+    command: kubectl apply -f /home/ubuntu/Dep/k8s/deploy-angular.yaml
+
+  - name: Frontend Service
+    command: kubectl apply -f /home/ubuntu/Dep/k8s/angular-svc.yaml
+
+  - name: Persistent Volume Claim
+    command: kubectl apply -f /home/ubuntu/Dep/k8s/pvc.yaml
+
+  - name: Deploy Ingress
+    command: kubectl apply -f /home/ubuntu/Dep/ingress.yaml
