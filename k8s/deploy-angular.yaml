@@ -5,7 +5,7 @@ metadata:
   labels:
     app: angular-app
 spec:
-  replicas: 2
+  replicas: 100
   selector:
     matchLabels:
       app: angular-app
