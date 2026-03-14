@@ -80,7 +80,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 bat'''
-                 ssh  -o StrictHostKeyChecking= no -i C:\\ProgramData\\Jenkins\\.jenkins\\master.pem ubuntu@54.196.35.185 "cd /home/ubuntu/Dep/ansible  && ansible-playbook -i inventory.ini playbook.yaml"
+                 ssh  -o StrictHostKeyChecking=no -i C:\\ProgramData\\Jenkins\\.jenkins\\master.pem ubuntu@54.196.35.185 "cd /home/ubuntu/Dep/ansible  && ansible-playbook -i inventory.ini playbook.yaml"
                 '''
             }
         }
