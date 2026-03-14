@@ -76,17 +76,12 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+
+        stage('Deploy with Ansible') {
             steps {
-                dir("Dep") {
-                  withKubeConfig([credentialsId:'kubeconfigg']){
-                      bat 'kubectl config view'
-                      bat 'kubectl get nodes --insecure-skip-tls-verify'
-                      bat 'kubectl apply -f k8s --validate=false --insecure-skip-tls-verify'
-                      bat 'kubectl apply -f ingress.yaml --validate=false --insecure-skip-tls-verify'
-                }
+                bat 'wsl ansible-playbook Dep/ansible/playbook.yaml -i Dep/ansible/inventory.ini'
             }
-        }}
+        }
 
     }
 }
