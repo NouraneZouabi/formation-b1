@@ -79,11 +79,13 @@ pipeline {
 
         stage('Deploy with Ansible') {
             steps {
-                dir("Dep/ansible") {
-                  withKubeConfig([credentialsId:'kubeconfigg']){
-                bat 'ansible-playbook -i inventory.ini playbook.yaml'
+                sshagent(['ssh-key']) {
+                    sh '''
+                    ssh ubuntu@54.196.35.185 "cd /home/ubuntu/Dep/ansible && ansible-playbook -i inventory.ini playbook.yaml"
+                    '''
+                }
             }
-        }}}
+        }
 
     }
 }
