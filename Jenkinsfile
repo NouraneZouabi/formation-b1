@@ -81,7 +81,7 @@ pipeline {
             steps {
                 dir("Dep/ansible") {
                   withKubeConfig([credentialsId:'kubeconfigg']){
-                bat 'wsl ansible-playbook -i inventory.ini playbook.yaml'
+                bat 'ansible-playbook -i inventory.ini playbook.yaml'
             }
         }}}
 
