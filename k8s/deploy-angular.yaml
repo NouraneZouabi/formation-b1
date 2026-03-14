@@ -16,6 +16,6 @@ spec:
     spec: 
       containers:
       - name: angular-app
-        image: nouran10/myapp-frontend
+        image: nouran10/myapp-frontend:badversion
         ports:
         - containerPort: 80
