@@ -77,13 +77,17 @@ pipeline {
         }
 
 
-        stage('Deploy with Ansible') {
+        stage('Deploy') {
             steps {
-                    bat '''
-                    ssh -o StrictHostKeyChecking=no -i C:\\ProgramData\\Jenkins\\.jenkins\\master.pem ubuntu@54.196.35.185 "cd /home/ubuntu/Dep/ansible && ansible-playbook -i inventory.ini playbook.yaml"
-                    '''
+                dir("Dep") {
+                  withKubeConfig([credentialsId:'kubeconfigg']){
+                      bat 'kubectl config view'
+                      bat 'kubectl get nodes --insecure-skip-tls-verify'
+                      bat 'kubectl apply -f k8s --validate=false --insecure-skip-tls-verify'
+                      bat 'kubectl apply -f ingress.yaml --validate=false --insecure-skip-tls-verify'
+                }
             }
-        }
+        }}
 
     }
 }
