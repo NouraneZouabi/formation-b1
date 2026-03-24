@@ -6,14 +6,14 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: spring-boot-app
+      app: spring-app
   template: 
     metadata: 
       labels:
-        app: spring-boot-app
+        app: spring-app
     spec:
       containers:
-      - name: spring-boot-app
+      - name: spring-app
         image: nouran10/myapp-backend
         ports:
         - containerPort: 8081

@@ -5,9 +5,10 @@ metadata:
 spec: 
   type: NodePort
   selector: 
-    app: spring-boot-app
+    app: spring-app
   ports:
-  - protocol: TCP
+  - name: http
+    protocol: TCP
     port: 8081
     targetPort: 8081
     nodePort: 30801

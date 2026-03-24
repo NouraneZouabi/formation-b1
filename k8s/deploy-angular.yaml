@@ -19,3 +19,4 @@ spec:
         image: nouran10/myapp-frontend
         ports:
         - containerPort: 80
+     
