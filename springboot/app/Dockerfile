@@ -1,4 +1,5 @@
 FROM eclipse-temurin:17-jdk-alpine
+RUN apk update && apk upgrade
 VOLUME /tmp
 EXPOSE 8081
 ARG JAR_FILE=target/demo-0.0.1.jar
