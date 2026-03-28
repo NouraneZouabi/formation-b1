@@ -1,6 +1,6 @@
 package com.oauth.demo.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
