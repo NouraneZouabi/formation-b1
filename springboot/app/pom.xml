@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.15</version>
+		<version>3.3.11</version>
 		<relativePath/>
 	</parent>
 	<groupId>app.exemple</groupId>
@@ -14,7 +14,8 @@
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
+		<tomcat.version>10.1.35</tomcat.version>
 	</properties>
 	<dependencies>
                 <dependency>
