@@ -1,10 +1,10 @@
 services:
   angular:
-    image: $DOCKER_USERNAME/myapp-frontend
+    image: angular-app
     ports:
     - "0.0.0.0:4200:80" 
   spring:
-    image: $DOCKER_USERNAME/myapp-backend
+    image: springboot-app
     ports:
     - "0.0.0.0:8081:8081"
     depends_on:
