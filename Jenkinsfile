@@ -36,5 +36,15 @@ pipeline {
             }
         }
 
+        stage ("Run Docker compose "){
+            steps{
+                dir("formation-b1"){
+                    sh "docker compose down "
+                    sh "docker compose pull "
+                    sh "docker compose up -d"
+                }
+            }
+        }
+
     }
 }
