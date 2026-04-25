@@ -1,0 +1,37 @@
+name: CI/CD Spring Angular
+
+on: 
+    push:
+        branches:
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v6
+        - name: Preparation du livrable .jar spring boot 
+          run: |
+            cd springboot/app
+            chmod +x mvnw
+            ./mvnw clean package 
+            ./mvnw clean verify 
+
+        -  name: Set up Docker Buildx
+           uses: docker/setup-buildx-action@v4
+
+        - name: Login to Docker Hub
+          uses: docker/login-action@v4
+          with:
+            username: ${{ vars.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+        - name: Construction et push de l'image spring 
+          run: |
+            docker build -t ${{ vars.DOCKERHUB_USERNAME }}/myapp-backend:latest springboot/app
+            docker push ${{ vars.DOCKERHUB_USERNAME }}/myapp-backend:latest
+        - name: Construction et push de l'image angular 
+          run: |
+            docker build -t ${{ vars.DOCKERHUB_USERNAME }}/myapp-frontend:latest angular-app
+            docker push ${{ vars.DOCKERHUB_USERNAME }}/myapp-frontend:latest
