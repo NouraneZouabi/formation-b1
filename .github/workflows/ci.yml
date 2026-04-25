@@ -35,3 +35,7 @@ jobs:
           run: |
             docker build -t ${{ vars.DOCKERHUB_USERNAME }}/myapp-frontend:latest angular-app
             docker push ${{ vars.DOCKERHUB_USERNAME }}/myapp-frontend:latest
+        - name: Lancement du docker compose
+          run: |
+            docker compose down 
+            docker compose up 

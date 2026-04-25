@@ -1,10 +1,10 @@
 services:
   angular:
-    image: angular-app
+    image: nouran10/myapp-frontend:latest
     ports:
     - "0.0.0.0:4200:80" 
   spring:
-    image: springboot-app
+    image: nouran10/myapp-backend:latest
     ports:
     - "0.0.0.0:8081:8081"
     depends_on:
